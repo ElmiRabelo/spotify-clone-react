@@ -1,13 +1,15 @@
-import React from "react";
-
+import React, { Fragment } from "react";
 import { GlobalStyle } from "./styles/global.style";
+
+//components
+import Sidebar from "./components/Sidebar/sidebar.component";
 
 function App() {
   return (
-    <div>
+    <Fragment>
       <GlobalStyle />
-      <h1>Hello World</h1>
-    </div>
+      <Sidebar />
+    </Fragment>
   );
 }
 
