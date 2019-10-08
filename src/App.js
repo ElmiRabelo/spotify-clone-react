@@ -4,8 +4,10 @@ import { GlobalStyle } from "./styles/global.style";
 //components
 import Sidebar from "./components/Sidebar/sidebar.component";
 import Player from "./components/Player/player.component";
+import Header from "./components/Header/header.component";
 
-import { Wrapper, Container } from "./styles/components.style";
+//Styled components
+import { Wrapper, Container, Content } from "./styles/components.style";
 
 function App() {
   return (
@@ -13,6 +15,9 @@ function App() {
       <GlobalStyle />
       <Container>
         <Sidebar />
+        <Content>
+          <Header />
+        </Content>
       </Container>
       <Player />
     </Wrapper>
