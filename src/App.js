@@ -3,13 +3,19 @@ import { GlobalStyle } from "./styles/global.style";
 
 //components
 import Sidebar from "./components/Sidebar/sidebar.component";
+import Player from "./components/Player/player.component";
+
+import { Wrapper, Container } from "./styles/components.style";
 
 function App() {
   return (
-    <Fragment>
+    <Wrapper>
       <GlobalStyle />
-      <Sidebar />
-    </Fragment>
+      <Container>
+        <Sidebar />
+      </Container>
+      <Player />
+    </Wrapper>
   );
 }
 
