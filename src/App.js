@@ -1,10 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { GlobalStyle } from "./styles/global.style";
 
 //components
 import Sidebar from "./components/Sidebar/sidebar.component";
 import Player from "./components/Player/player.component";
 import Header from "./components/Header/header.component";
+import Routes from "./routes/routes";
 
 //Styled components
 import { Wrapper, Container, Content } from "./styles/components.style";
@@ -17,6 +18,7 @@ function App() {
         <Sidebar />
         <Content>
           <Header />
+          <Routes />
         </Content>
       </Container>
       <Player />
