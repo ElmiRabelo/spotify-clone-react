@@ -1,45 +1,58 @@
-import React from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+// Redux e Redux Saga
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Creators as PlaylistActions } from "../../store/ducks/playlists.ducks";
 
 import { Container, Title, List, Playlist } from "./browse.style";
 
-const Browse = () => (
-  <Container>
-    <Title>Navegar</Title>
-    <List>
-      <Playlist to="/playlist/1">
-        <img
-          src="http://pm1.narvii.com/6985/43df72a5b8e94a837e55abbf099a1f839faa7146r1-850-850v2_uhq.jpg"
-          alt="As melhores de Blackpink"
-        />
-        <strong>As Melhores de Blackpink</strong>
-        <p>Curta as melhores músicas de Blackpink, que são todas elas.</p>
-      </Playlist>
-      <Playlist to="/playlist/1">
-        <img
-          src="http://pm1.narvii.com/6985/43df72a5b8e94a837e55abbf099a1f839faa7146r1-850-850v2_uhq.jpg"
-          alt="As melhores de Blackpink"
-        />
-        <strong>As Melhores de Blackpink</strong>
-        <p>Curta as melhores músicas de Blackpink, que são todas elas.</p>
-      </Playlist>
-      <Playlist to="/playlist/1">
-        <img
-          src="http://pm1.narvii.com/6985/43df72a5b8e94a837e55abbf099a1f839faa7146r1-850-850v2_uhq.jpg"
-          alt="As melhores de Blackpink"
-        />
-        <strong>As Melhores de Blackpink</strong>
-        <p>Curta as melhores músicas de Blackpink, que são todas elas.</p>
-      </Playlist>
-      <Playlist to="/playlist/1">
-        <img
-          src="http://pm1.narvii.com/6985/43df72a5b8e94a837e55abbf099a1f839faa7146r1-850-850v2_uhq.jpg"
-          alt="As melhores de Blackpink"
-        />
-        <strong>As Melhores de Blackpink</strong>
-        <p>Curta as melhores músicas de Blackpink, que são todas elas.</p>
-      </Playlist>
-    </List>
-  </Container>
-);
+class Browse extends Component {
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          title: PropTypes.string,
+          thumbnail: PropTypes.string,
+          description: PropTypes.string
+        })
+      )
+    }).isRequired
+  };
 
-export default Browse;
+  componentDidMount() {
+    this.props.getPlaylistsRequest();
+  }
+
+  render() {
+    return (
+      <Container>
+        <Title>Navegar</Title>
+        <List>
+          {this.props.playlists.data.map(playlist => (
+            <Playlist key={playlist.id} to={`/playlists/${playlist.id}`}>
+              <img src={playlist.thumbnail} alt={playlist.title} />
+              <strong>{playlist.title}</strong>
+              <p>{playlist.description}</p>
+            </Playlist>
+          ))}
+        </List>
+      </Container>
+    );
+  }
+}
+
+const mapStateToProps = state => ({
+  playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(PlaylistActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Browse);

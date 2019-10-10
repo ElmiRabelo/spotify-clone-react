@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////
-// ----> Reducer
+// ----> Types
 
 export const Types = {
   GET_REQUEST: "playlists/GET_REQUEST",
