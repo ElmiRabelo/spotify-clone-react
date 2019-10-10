@@ -1,6 +1,8 @@
 import React from "react";
 import { GlobalStyle } from "./styles/global.style";
 
+import "./config/reactotronConfig";
+
 //components
 import Sidebar from "./components/Sidebar/sidebar.component";
 import Player from "./components/Player/player.component";
