@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Spinner } from "../Loading/loading.style";
+
 export const Container = styled.aside`
   height: 100%;
   width: 200px;
@@ -18,6 +20,14 @@ export const Container = styled.aside`
 export const Nav = styled.ul`
   list-style: none;
   margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+
+  ${Spinner} {
+    align-self: center;
+    margin-top: 15px;
+    height: 15px;
+  }
 
   &:first-child {
     margin-top: 0;

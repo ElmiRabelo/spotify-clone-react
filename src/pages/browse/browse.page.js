@@ -7,6 +7,7 @@ import { bindActionCreators } from "redux";
 import { Creators as PlaylistActions } from "../../store/ducks/playlists.ducks";
 
 import { Container, Title, List, Playlist } from "./browse.style";
+import Loading from "../../components/Loading/loading.component";
 
 class Browse extends Component {
   static propTypes = {
@@ -19,7 +20,8 @@ class Browse extends Component {
           thumbnail: PropTypes.string,
           description: PropTypes.string
         })
-      )
+      ),
+      loading: PropTypes.bool
     }).isRequired
   };
 
@@ -32,13 +34,17 @@ class Browse extends Component {
       <Container>
         <Title>Navegar</Title>
         <List>
-          {this.props.playlists.data.map(playlist => (
-            <Playlist key={playlist.id} to={`/playlists/${playlist.id}`}>
-              <img src={playlist.thumbnail} alt={playlist.title} />
-              <strong>{playlist.title}</strong>
-              <p>{playlist.description}</p>
-            </Playlist>
-          ))}
+          {this.props.playlists.loading ? (
+            <Loading />
+          ) : (
+            this.props.playlists.data.map(playlist => (
+              <Playlist key={playlist.id} to={`/playlists/${playlist.id}`}>
+                <img src={playlist.thumbnail} alt={playlist.title} />
+                <strong>{playlist.title}</strong>
+                <p>{playlist.description}</p>
+              </Playlist>
+            ))
+          )}
         </List>
       </Container>
     );
