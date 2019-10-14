@@ -5,9 +5,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Creators as PlaylistDetailsActions } from "../../store/ducks/playlistDetails.ducks";
+import { Creators as PlayerActions } from "../../store/ducks/player.ducks";
 
 //styled components, icons e images
-import { Container, Header, SongList } from "./playlist.style";
+import { Container, Header, SongList, SongItem } from "./playlist.style";
 import ClockIcon from "../../assets/images/clock.svg";
 import PlusIcon from "../../assets/images/plus.svg";
 import Loading from "../../components/Loading/loading.component";
@@ -34,7 +35,12 @@ class Playlist extends Component {
           })
         )
       })
-    }).isRequired
+    }).isRequired,
+    loadSong: PropTypes.func.isRequired
+  };
+
+  state = {
+    selectedSong: null
   };
 
   componentDidMount() {
@@ -81,11 +87,20 @@ class Playlist extends Component {
           <tbody>
             {!playlist.songs ? (
               <tr>
-                <td colspan={5}>Não existe músicas cadastradas</td>
+                <td colSpan={5}>Não existe músicas cadastradas</td>
               </tr>
             ) : (
               playlist.songs.map(song => (
-                <tr key={song.id}>
+                <SongItem
+                  key={song.id}
+                  onClick={() => this.setState({ selectedSong: song.id })}
+                  onDoubleClick={() => this.props.loadSong(song)}
+                  selected={this.state.selectedSong === song.id}
+                  playing={
+                    this.props.currentSong &&
+                    this.props.currentSong.id === song.id
+                  }
+                >
                   <td>
                     <img src={PlusIcon} alt="Adicionar" />
                   </td>
@@ -93,7 +108,7 @@ class Playlist extends Component {
                   <td>{song.author}</td>
                   <td>{song.album}</td>
                   <td>3:19</td>
-                </tr>
+                </SongItem>
               ))
             )}
           </tbody>
@@ -114,11 +129,12 @@ class Playlist extends Component {
 }
 
 const mapStateToProps = state => ({
-  playlistDetails: state.playlistDetails
+  playlistDetails: state.playlistDetails,
+  currentSong: state.player.currentSong
 });
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators(PlaylistDetailsActions, dispatch);
+  bindActionCreators({ ...PlaylistDetailsActions, ...PlayerActions }, dispatch);
 
 export default connect(
   mapStateToProps,

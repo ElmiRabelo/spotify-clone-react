@@ -33,17 +33,22 @@ export const Nav = styled.ul`
     margin-top: 0;
   }
   li {
+    flex: 1;
+    margin-bottom: 18px;
+    &:last-child {
+      margin-bottom: 0px;
+    }
     a {
       color: inherit;
       text-decoration: none;
       font-size: 13px;
-      line-height: 32px;
       font-weight: ${props => (props.main ? "bold" : "normal")};
       &:hover {
         color: #fff;
       }
     }
   }
+
   span {
     font-size: 11px;
     text-transform: uppercase;
