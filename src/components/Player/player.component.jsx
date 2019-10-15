@@ -28,22 +28,29 @@ import PauseIcon from "../../assets/images/pause.svg";
 import ForwardIcon from "../../assets/images/forward.svg";
 import RepeatIcon from "../../assets/images/repeat.svg";
 
-const Player = ({ player, play, pause }) => (
+const Player = ({
+  player: { currentSong, status },
+  play,
+  pause,
+  next,
+  prev
+}) => (
   <Container>
-    {!!player.currentSong && (
-      <Sound url={player.currentSong.file} playStatus={player.status} />
+    {!!currentSong && (
+      <Sound
+        url={currentSong.file}
+        playStatus={status}
+        onFinishedPlaying={next}
+      />
     )}
 
     <Current>
-      {!!player.currentSong && (
+      {!!currentSong && (
         <Fragment>
-          <img
-            src={player.currentSong.thumbnail}
-            alt={`${player.currentSong.title} cover`}
-          />
+          <img src={currentSong.thumbnail} alt={`${currentSong.title} cover`} />
           <div>
-            <span>{player.currentSong.title}</span>
-            <small>{player.currentSong.author}</small>
+            <span>{currentSong.title}</span>
+            <small>{currentSong.author}</small>
           </div>
         </Fragment>
       )}
@@ -58,7 +65,7 @@ const Player = ({ player, play, pause }) => (
           <img src={BackwardIcon} alt="Backward button" />
         </button>
 
-        {!!player.currentSong && player.status === Sound.status.PLAYING ? (
+        {!!currentSong && status === Sound.status.PLAYING ? (
           <button onClick={pause}>
             <img src={PauseIcon} alt="Pause button" />
           </button>
@@ -68,10 +75,10 @@ const Player = ({ player, play, pause }) => (
           </button>
         )}
 
-        <button>
+        <button onClick={next}>
           <img src={ForwardIcon} alt="Forward button" />
         </button>
-        <button>
+        <button onClick={prev}>
           <img src={RepeatIcon} alt="Repeat button" />
         </button>
       </Controls>
@@ -110,7 +117,11 @@ Player.propTypes = {
       author: PropTypes.string
     }),
     status: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  pause: PropTypes.func.isRequired,
+  play: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
+  prev: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
