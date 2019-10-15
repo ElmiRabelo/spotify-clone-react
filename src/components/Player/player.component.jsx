@@ -29,28 +29,40 @@ import ForwardIcon from "../../assets/images/forward.svg";
 import RepeatIcon from "../../assets/images/repeat.svg";
 
 const Player = ({
-  player: { currentSong, status },
+  player,
   play,
   pause,
   next,
-  prev
+  prev,
+  playing,
+  position,
+  duration,
+  handlePosition,
+  setPosition,
+  positionShow,
+  progress
 }) => (
   <Container>
-    {!!currentSong && (
+    {!!player.currentSong && (
       <Sound
-        url={currentSong.file}
-        playStatus={status}
+        url={player.currentSong.file}
+        playStatus={player.status}
         onFinishedPlaying={next}
+        onPlaying={playing}
+        position={player.position}
       />
     )}
 
     <Current>
-      {!!currentSong && (
+      {!!player.currentSong && (
         <Fragment>
-          <img src={currentSong.thumbnail} alt={`${currentSong.title} cover`} />
+          <img
+            src={player.currentSong.thumbnail}
+            alt={`${player.currentSong.title} cover`}
+          />
           <div>
-            <span>{currentSong.title}</span>
-            <small>{currentSong.author}</small>
+            <span>{player.currentSong.title}</span>
+            <small>{player.currentSong.author}</small>
           </div>
         </Fragment>
       )}
@@ -65,7 +77,7 @@ const Player = ({
           <img src={BackwardIcon} alt="Backward button" />
         </button>
 
-        {!!currentSong && status === Sound.status.PLAYING ? (
+        {!!player.currentSong && player.status === Sound.status.PLAYING ? (
           <button onClick={pause}>
             <img src={PauseIcon} alt="Pause button" />
           </button>
@@ -84,15 +96,19 @@ const Player = ({
       </Controls>
 
       <Time>
-        <span>1:11</span>
+        <span>{positionShow || position}</span>
         <ProgressSlider>
           <Slider
             railStyle={{ background: "#404040", borderRadius: 10 }}
             trackStyle={{ background: "#1ed760" }}
             handleStyle={{ border: 0 }}
+            max={1000}
+            onChange={value => handlePosition(value / 1000)}
+            onAfterChange={value => setPosition(value / 1000)}
+            value={progress}
           />
         </ProgressSlider>
-        <span>3:29</span>
+        <span>{duration}</span>
       </Time>
     </Progress>
 
@@ -121,11 +137,38 @@ Player.propTypes = {
   pause: PropTypes.func.isRequired,
   play: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
-  prev: PropTypes.func.isRequired
+  prev: PropTypes.func.isRequired,
+  playing: PropTypes.func.isRequired,
+  position: PropTypes.string.isRequired,
+  duration: PropTypes.string.isRequired,
+  handlePosition: PropTypes.func.isRequired,
+  setPosition: PropTypes.func.isRequired,
+  positionShow: PropTypes.string.isRequired,
+  progress: PropTypes.number.isRequired
 };
 
+function msToTime(duration) {
+  if (!duration) return null;
+
+  let seconds = parseInt((duration / 1000) % 60, 10);
+  const minutes = parseInt((duration / (1000 * 60)) % 60, 10);
+
+  seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+  return `${minutes}:${seconds}`;
+}
+
 const mapStateToProps = state => ({
-  player: state.player
+  player: state.player,
+  position: msToTime(state.player.position),
+  duration: msToTime(state.player.duration),
+  positionShow: msToTime(state.player.positionShow),
+  progress:
+    parseInt(
+      (state.player.positionShow || state.player.position) *
+        (1000 / state.player.duration),
+      10
+    ) || 0
 });
 
 const mapDispatchToProps = dispatch =>

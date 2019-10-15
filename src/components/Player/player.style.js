@@ -51,6 +51,10 @@ export const Controls = styled.div`
     background: transparent;
     border: 0;
     margin: 0 15px;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 
