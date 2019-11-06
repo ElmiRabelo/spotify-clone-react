@@ -12,21 +12,23 @@ import ErrorBox from "./components/ErrorBox/error-box.component";
 //Styled components
 import { Wrapper, Container, Content } from "./styles/components.style";
 
-function App() {
-  return (
-    <Wrapper>
-      <GlobalStyle />
-      <Container>
-        <Sidebar />
-        <Content>
-          <ErrorBox />
-          <Header />
-          <Routes />
-        </Content>
-      </Container>
-      <Player />
-    </Wrapper>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Wrapper>
+        <GlobalStyle />
+        <Container>
+          <Sidebar />
+          <Content>
+            <ErrorBox />
+            <Header />
+            <Routes />
+          </Content>
+        </Container>
+        <Player />
+      </Wrapper>
+    );
+  }
 }
 
 export default App;
