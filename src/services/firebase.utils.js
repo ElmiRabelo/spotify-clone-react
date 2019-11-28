@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey: "AIzaSyDvrv0wWOK3aZlfV5jkemIdlbQKgBBOmJ8",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
   authDomain: "crown-clothing-db-c73ad.firebaseapp.com",
   databaseURL: "https://crown-clothing-db-c73ad.firebaseio.com",
   projectId: "crown-clothing-db-c73ad",
